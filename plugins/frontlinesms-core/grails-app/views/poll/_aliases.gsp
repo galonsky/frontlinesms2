@@ -39,6 +39,37 @@
 				}
 			};
 		$("input[name='enableKeyword']").live("change", enableKeyword);
+
+		function generateKeywordTip(keyword, alias){
+			var aliases = alias.split(",");
+			var keywords = keyword.split(',');
+			var tipArray = [];
+			var n = 0;
+			$(aliases).each(function(i, v) {
+				$(keywords).each(function(index, key){
+					tipArray[n] = key + " " + v;
+					n++;
+				});
+			});
+			var tip =  tipArray.splice(0,3).join(', ').trim();
+			return (tip.length > 0 ? tip : i18n('poll.sort.tip.prompt'));
+		}
+
+		function processTips(){
+			var keywords = $("input.keywords");
+			var tipLabels = $("label.tiplabel");
+			var tipPrompts = $("label.tipprompt");
+			var topLevelKeyword = $("input#poll-keyword").val();
+			var keyword
+			tipPrompts.each(function(key, obj){
+				keyword = $(keywords[key]).val();
+				if($(keywords[key]).attr('disabled') == undefined){
+					var tip = generateKeywordTip(topLevelKeyword,keyword);
+					$(obj).html(tip);
+					$(tipLabels[key]).html(i18n('poll.sort.tip.label'));
+				}
+			});
+		}
 	</r:script>
 
 </div>
@@ -48,7 +79,7 @@
 		<p><g:message code="subscription.top.keyword.description"/></p>
 	</div>
 	<div class="input">
-		<g:textField name="topLevelKeyword" id="poll-keyword" class="sorting-generic-no-spaces sorting-generic-unique validcommas" disabled="${activityInstanceToEdit?.keywords?false:true}" value="${activityInstanceToEdit?.keywords.findAll{it.isTopLevel && it.ownerDetail == null}?.value?.join(',')}"/>
+		<g:textField name="topLevelKeyword" id="poll-keyword" class="sorting-generic-no-spaces sorting-generic-unique validcommas" disabled="${activityInstanceToEdit?.keywords?false:true}" value="${activityInstanceToEdit?.keywords.findAll{it.isTopLevel && it.ownerDetail == null}?.value?.join(',')}"onkeyup="processTips()" />
 	</div>
 	<h2><g:message code="poll.keywords.header"/></h2>
 	<div class="info">
@@ -62,21 +93,29 @@
 						<td><label for='keywords${key}' class="${key == 'A' || key == 'B' || pollResponse?.value || (i == (activityInstanceToEdit?.responses.size() - 1)) ? 'field-enabled': ''}">keywords${key}</label>
 						<% def pollResponse = activityInstanceToEdit?.responses.find {it.key == key} %>
 						<g:if test="${(key == 'A' || key == 'B' || pollResponse?.value || (i == (activityInstanceToEdit?.responses.size() - 2)))}"></td>
-							<td><g:textField class='keywords required validcommas sorting-generic-no-spaces' name='keywords${key}' value="${activityInstanceToEdit.keywords.findAll{ it.ownerDetail == pollResponse?.key }.value.join(',')}"/></td>
+							<td><g:textField class='keywords required validcommas sorting-generic-no-spaces' name='keywords${key}' value="${activityInstanceToEdit.keywords.findAll{ it.ownerDetail == pollResponse?.key }.value.join(',')}" onkeyup="processTips()" /></td>
 						</g:if>
 						<g:else>
-							<td><g:textField class='keywords required validcommas sorting-generic-no-spaces' name="keywords${key}" value="" disabled="true"/></td>
+							<td><g:textField class='keywords required validcommas sorting-generic-no-spaces' name="keywords${key}" value="" disabled="true" onkeyup="processTips()"/></td>
 						</g:else>
 					</g:if>
 					<g:else>
 						<td><label for='keywords${key}' class="${key == 'A' || key == 'B' ? 'field-enabled': ''}">${option}</label></td>
 						<g:if test="${key == 'A' || key == 'B'}">
-							<td><g:textField class='keywords validcommas sorting-generic-no-spaces' name='keywords${key}'/></td>
+							<td><g:textField class='keywords validcommas sorting-generic-no-spaces' name='keywords${key}' onkeyup="processTips()"/></td>
 						</g:if>
 						<g:else>
-							<td><g:textField class='keywords validcommas sorting-generic-no-spaces' name='keywords${key}' disabled="true"/></td>
+							<td><g:textField class='keywords validcommas sorting-generic-no-spaces' name='keywords${key}' disabled="true" onkeyup="processTips()"/></td>
 						</g:else>
 					</g:else>
+				</tr>
+				<tr>
+					<td>
+						<label id='keywords${key}tiplabel' class='tiplabel'> </label>
+					</td>
+					<td>
+						<label id='keywords${key}tipprompt' class='tipprompt'></label>
+					</td>
 				</tr>
 			</g:each>
 		</table>

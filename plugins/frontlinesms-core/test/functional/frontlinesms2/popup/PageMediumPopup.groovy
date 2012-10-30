@@ -130,13 +130,13 @@ class ResponseTab extends geb.Module {
 class SortTab extends geb.Module {
 	static base = { $('div#tabs-3') }
 	static content = {
-		dontSort { $('ul.select input[value="false"]') }
-		sort { $('ul.select input[value="true"]') }
+		dontSort { $('ul.input input[value="disabled"]') }
+		sort { $('ul.input input[value="enabled"]') }
 		toggle { $('input#enableKeyword') }
 		keyword { $('input#poll-keyword') }
 		labels { $('#poll-aliases label') }
 		inputs { $('#poll-aliases input.keywords') }
-		pollKeywordsContainer { $('#poll-keywords') }
+		pollKeywordsContainer { $('#sorting-details') }
 	}
 }
 

@@ -23,6 +23,7 @@
 		</g:if>
 		addCustomValidationClasses();
 		initializeTabValidation(createFormValidator());
+		processTips();
 	}
 
 	function createFormValidator() {
