@@ -396,6 +396,8 @@ class SubscriptionGroupTab extends geb.Module {
 class SubscriptionKeywordsTab extends geb.Module {
 	static base = { $('div#tabs-2')}
 	static content = {
+		dontSort { $('ul.input input[value="disabled"]') }
+		sort { $('ul.input input[value="enabled"]') }
 		keywordText { $('input#topLevelKeywords') }
 		joinKeywords {$('input#joinKeywords')}
 		leaveKeywords {$('input#leaveKeywords')}

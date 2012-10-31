@@ -36,6 +36,7 @@ class SubscriptionCedSpec extends SubscriptionBaseSpec  {
 		then:
 			waitFor { keywords.displayed }
 		when:
+			keywords.sort.click()
 			keywords.keywordText = 'FRIENDS'
 			keywords.joinKeywords = 'join, start'
 			keywords.leaveKeywords = 'leave, stop'
@@ -83,6 +84,7 @@ class SubscriptionCedSpec extends SubscriptionBaseSpec  {
 		then:
 			waitFor { keywords.displayed }
 		when:
+			keywords.sort.click()
 			keywords.joinKeywords = 'join, start'
 			keywords.leaveKeywords = 'leave, stop'
 		then:
@@ -144,6 +146,7 @@ class SubscriptionCedSpec extends SubscriptionBaseSpec  {
 			waitFor { at SubscriptionCreateDialog }
 			group.addToGroup Group.findByName('Friends').id.toString()
 			next.click()
+			keywords.sort.click()
 			keywords.keywordText = 'FRIENDS'
 			keywords.joinKeywords = 'join, start'
 			keywords.leaveKeywords = 'leave, stop'
@@ -181,6 +184,7 @@ class SubscriptionCedSpec extends SubscriptionBaseSpec  {
 			waitFor { at SubscriptionCreateDialog }
 			group.addToGroup Group.findByName('Friends').id
 			next.click()
+			keywords.sort.click()
 			keywords.keywordText = 'FRIENDS'
 			keywords.joinKeywords = 'team'
 			keywords.leaveKeywords = 'team'
@@ -199,6 +203,7 @@ class SubscriptionCedSpec extends SubscriptionBaseSpec  {
 			waitFor { at SubscriptionCreateDialog }
 			group.addToGroup Group.findByName('Friends').id
 			next.click()
+			keywords.sort.click()
 			keywords.keywordText = 'FRIENDS'
 			keywords.joinKeywords = 'team'
 			keywords.leaveKeywords = 'team%^&%^%&'
@@ -217,6 +222,7 @@ class SubscriptionCedSpec extends SubscriptionBaseSpec  {
 			waitFor { at SubscriptionCreateDialog }
 			group.addToGroup Group.findByName('Friends').id
 			next.click()
+			keywords.sort.click()
 			keywords.keywordText = 'FRIENDS'
 			keywords.joinKeywords = 'join, start'
 			keywords.leaveKeywords = 'leave, stop'
@@ -244,6 +250,7 @@ class SubscriptionCedSpec extends SubscriptionBaseSpec  {
 		then:
 			waitFor { keywords.displayed }
 		when:
+			keywords.sort.click()
 			keywords.keywordText = 'FRIENDS'
 			keywords.joinKeywords = 'join, start'
 			keywords.leaveKeywords = 'leave, stop'
