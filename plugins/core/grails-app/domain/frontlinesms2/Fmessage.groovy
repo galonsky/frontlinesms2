@@ -3,6 +3,7 @@ package frontlinesms2
 import groovy.time.*
 import org.hibernate.FlushMode
 import org.hibernate.criterion.CriteriaSpecification
+import java.security.MessageDigest
 
 class Fmessage {
 	static final int MAX_TEXT_LENGTH = 1600
@@ -202,16 +203,17 @@ class Fmessage {
 	}
 
 	def getDisplayName() {
+		def obfuscator = NumberObfuscator.getInstance()
 		if(inbound) {
 			if(inboundContactName) return inboundContactName
-			else if(id) return src
-			else return Contact.findByMobile(src)?.name?: src
+			else if(id) return obfuscator.obfuscateNumber(src)
+			else return Contact.findByMobile(src)?.name?: obfuscator.obfuscateNumber(src)
 		} else if(dispatches.size() == 1) {
 			if(outboundContactName) return outboundContactName
 			else {
 				def dst = (dispatches as List)[0].dst
-				if(id) return dst
-				else return Contact.findByMobile(dst)?.name?: dst
+				if(id) return obfuscator.obfuscateNumber(dst)
+				else return Contact.findByMobile(dst)?.name?: obfuscator.obfuscateNumber(dst)
 			}
 		} else {
 			return Integer.toString(dispatches.size())

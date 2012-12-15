@@ -280,13 +280,14 @@ class MessageController {
 	}
 	
 	def listRecipients() {
+		def obfuscator = NumberObfuscator.getInstance()
 		def message = Fmessage.get(params.messageId)
 		if(!message) {
 			render text:'ERROR'
 			return
 		}
 		render message.dispatches.collect {
-			String display = Contact.findByMobile(it.dst)?.name?: it.dst
+			String display = Contact.findByMobile(it.dst)?.name?: obfuscator.obfuscateNumber(it.dst)
 			[display:display, status:it.status.toString()]
 		}.sort { it.display } as JSON
 	}
